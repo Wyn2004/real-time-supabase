@@ -101,6 +101,11 @@ export default function ChatMessages() {
             .single();
 
           if (!error && newMessage) {
+            // Handle both array and single object cases for users
+            const userData = Array.isArray(newMessage.users)
+              ? newMessage.users[0]
+              : newMessage.users;
+
             const formattedMessage: MessageWithUser = {
               id: newMessage.id,
               text: newMessage.text,
@@ -108,9 +113,9 @@ export default function ChatMessages() {
               isEdit: newMessage.is_edit,
               createdAt: new Date(newMessage.created_at),
               user: {
-                id: newMessage.users.id,
-                displayName: newMessage.users.display_name,
-                avatarUrl: newMessage.users.avatar_url,
+                id: userData.id,
+                displayName: userData.display_name,
+                avatarUrl: userData.avatar_url,
               },
             };
 

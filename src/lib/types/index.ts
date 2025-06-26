@@ -7,16 +7,6 @@ export type User = {
   updatedAt: Date;
 };
 
-export type Message = {
-  id: string;
-  text: string;
-  sendBy: string;
-  isEdit: boolean;
-  createdAt: Date;
-  updatedAt: Date;
-  user: User;
-};
-
 export type MessageWithUser = {
   id: string;
   text: string;

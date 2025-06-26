@@ -22,6 +22,7 @@ export default function ChatPresence() {
     channel
       .on("presence", { event: "sync" }, () => {
         const newState = channel.presenceState();
+        console.log(123123, newState);
         const userCount = Object.keys(newState).length;
         setOnlineUsers(userCount);
       })
