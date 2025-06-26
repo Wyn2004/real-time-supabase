@@ -24,6 +24,23 @@ export default function ChatInput() {
     setLoading(true);
 
     try {
+      // Ensure user exists in database first
+      const { error: userError } = await supabase.from("users").upsert([
+        {
+          id: user.id,
+          email: user.email || "",
+          display_name: user.displayName || user.email || "",
+          avatar_url: user.avatarUrl || "",
+        },
+      ]);
+
+      if (userError && userError.code !== "23505") {
+        console.error("User upsert error:", userError);
+        toast.error("Failed to save user info");
+        return;
+      }
+
+      // Insert message - realtime sẽ tự động update UI
       const { error: messageError } = await supabase.from("messages").insert([
         {
           text: text.trim(),
@@ -38,6 +55,7 @@ export default function ChatInput() {
         return;
       }
 
+      // Không cần toast success vì realtime sẽ hiển thị message ngay
       console.log("Message inserted, realtime should update UI");
     } catch (error) {
       console.error("Error sending message:", error);
